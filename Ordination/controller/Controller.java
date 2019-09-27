@@ -4,32 +4,28 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import ordination.DagligFast;
-import ordination.DagligSkaev;
-import ordination.Laegemiddel;
-import ordination.PN;
-import ordination.Patient;
+import ordination.*;
 import storage.Storage;
 
 public class Controller {
     private Storage storage;
     private static Controller controller;
-    
+
     private Controller() {
         storage = new Storage();
     }
-    
+
     public static Controller getController() {
         if (controller == null) {
             controller = new Controller();
         }
         return controller;
     }
-    
+
     public static Controller getTestController() {
         return new Controller();
     }
-    
+
     /**
      * Hvis startDato er efter slutDato kastes en IllegalArgumentException og
      * ordinationen oprettes ikke
@@ -39,10 +35,17 @@ public class Controller {
      */
     public PN opretPNOrdination(LocalDate startDen, LocalDate slutDen,
         Patient patient, Laegemiddel laegemiddel, double antal) {
-        // TODO
-        return null;
+
+        if (!this.checkStartFoerSlut(startDen, slutDen)) {
+            throw new IllegalArgumentException("Slutdatoen må ikke komme før startdatoen");
+        }
+
+        PN ordination = new PN(startDen, slutDen, laegemiddel, antal);
+        patient.addOrdination(ordination);
+
+        return ordination;
     }
-    
+
     /**
      * Opretter og returnerer en DagligFast ordination. Hvis startDato er efter
      * slutDato kastes en IllegalArgumentException og ordinationen oprettes ikke
