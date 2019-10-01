@@ -9,9 +9,11 @@ import ordination.Patient;
 public class Storage {
 	private List<Patient> patienter;
 	private List<Laegemiddel> laegemidler;
+	private List<Patient> deSejePatienter;
 
 	public Storage() {
 		patienter = new ArrayList<Patient>();
+		deSejePatienter = new ArrayList<Patient>();
 		laegemidler = new ArrayList<Laegemiddel>();
 	}
 
